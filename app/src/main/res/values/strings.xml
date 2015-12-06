@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Whoo</string>
+    <string name="main_title">Whoo: Photo..</string>
+    <string name="helpinfo">The viewfinder below can help you take a head photo</string>
+    <string name="upload">Upload</string>
+    <string name="capture">Capture</string>
+    <string name="default_serverip">192.168.111.111</string>
+    <string name="default_algoindex">2</string>
+</resources>

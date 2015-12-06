@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container" android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:orientation="horizontal">
+
+<RelativeLayout android:id="@+id/top" android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:orientation="horizontal"
+    android:layout_alignParentTop="true" style="@android:style/ButtonBar">
+
+    <Button
+        android:id="@+id/cameraSwithButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Camera Switch" />
+
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Software Settings" />
+
+	<Space
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    
+</RelativeLayout>
+</RelativeLayout><!-- From: file:/C:/Users/Samuel/AndroidStudioProjects/Whoo/app/src/main/res/layout/top_menu.xml -->

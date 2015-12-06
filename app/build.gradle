@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.lamar.cs.whoo"
+        minSdkVersion 14
+        targetSdkVersion 19
+
+        ndk {
+            moduleName "facerec"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    sourceSets.main {
+        jni.srcDirs = [] // This prevents the auto generation of Android.mk
+        jniLibs.srcDir 'src/main/jniLibs' // This is not necessary unless you have precompiled libraries in your project.
+    }
+
+    task buildNative(type: Exec, description: 'Compile JNI source via NDK') {
+        // update the time and date of the file 'version'
+        commandLine "copy", "/b", "src/main/assets/version", "+,,"
+        //def ndkDir = android.plugin.ndkFolder
+        //commandLine "ndk-build",
+        //        '-C', file('src/main/jni').absolutePath, // Change src/main/jni the relative path to your jni source
+        //        'all',
+        //        'NDK_DEBUG=1'
+        commandLine "ndk-build.cmd", "-C", file('src/main/jni').absolutePath, "all"
+    }
+
+    task cleanNative(type: Exec, description: 'Clean JNI object files') {
+        //def ndkDir = android.plugin.ndkFolder
+        //commandLine "ndk-build",
+         //       '-C', file('src/main/jni').absolutePath, // Change src/main/jni the relative path to your jni source
+         //       'clean'
+        commandLine "ndk-build.cmd", "-C", file('src/main/jni').absolutePath, "clean"
+    }
+
+    clean.dependsOn 'cleanNative'
+
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn buildNative
+    }
+
+    productFlavors {
+        x86 {
+            ndk {
+                abiFilter "x86"
+            }
+        }
+        arm {
+            ndk {
+                abiFilter "armeabi-v7a"
+            }
+        }
+        mips {
+            ndk {
+                abiFilter "mips"
+            }
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:19.1.0'
+    compile project(':opencv:sdk:java')
+}

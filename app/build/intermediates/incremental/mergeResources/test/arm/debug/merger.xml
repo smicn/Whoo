@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="C:\Users\Samuel\AndroidStudioProjects\Whoo\app\src\androidTest\res"/><source path="C:\Users\Samuel\AndroidStudioProjects\Whoo\app\build\generated\res\rs\test\arm\debug"/><source path="C:\Users\Samuel\AndroidStudioProjects\Whoo\app\build\generated\res\generated\test\arm\debug"/></dataSet><dataSet config="androidTestArm"><source path="C:\Users\Samuel\AndroidStudioProjects\Whoo\app\src\androidTestArm\res"/></dataSet><mergedItems/></merger>
