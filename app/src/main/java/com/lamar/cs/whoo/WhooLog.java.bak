@@ -33,40 +33,40 @@ import java.util.Date;
  */
 public class WhooLog {
 
-    private final static String TAG = "whoo.log";
+	private final static String TAG = "whoo.log";
 
     private static WhooLog mInst;
 
-    private final static String PRIVATE_FILE = "log.txt";
+	private final static String PRIVATE_FILE = "log.txt";
 
-    private static PrintWriter mWriter;
+	private static PrintWriter mWriter;
 
     private WhooLog() {
     }
 
     public static void open(Context context) {
-        try {
-            FileOutputStream fos = null;
+		try {
+			FileOutputStream fos = null;
 
             if (WhooConfig.USING_EXTERNAL_STORAGE) {
                 File dir = Environment.getExternalStorageDirectory();
                 if (!dir.exists()) {
                     WhooConfig.DBG("Error: SD card path " + dir.getAbsolutePath() + " does not exist!");
-                    return;
+					return;
                 }
                 else {
                     dir = new File(Environment.getExternalStorageDirectory()
-                            .getAbsolutePath() + "/" + WhooConfig.ROOT_DIR());
+							.getAbsolutePath() + "/" + WhooConfig.ROOT_DIR());
                     if (!dir.exists()) {
                         dir.mkdirs();
                         dir.setReadable(true, true);
                         dir.setWritable(true, true);
 
-                        Log.d(TAG, "d: created new directory by mkdir(): " + dir.getAbsolutePath());
+						Log.d(TAG, "d: created new directory by mkdir(): " + dir.getAbsolutePath());
                     }
 
                     File file = new File(dir.getAbsolutePath() + "/" + PRIVATE_FILE);
-                    
+					
                     fos = new FileOutputStream(file, true/*append*/);
                 }
             }
@@ -75,37 +75,37 @@ public class WhooLog {
             }
 
             mWriter = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(fos)), true);
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, "error, file " + PRIVATE_FILE + " cannot be open!" );
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.e(TAG, "error, file " + PRIVATE_FILE + " write failed!" );
-            e.printStackTrace();
-        }
+					new OutputStreamWriter(fos)), true);
+		} catch (FileNotFoundException e) {
+			Log.e(TAG, "error, file " + PRIVATE_FILE + " cannot be open!" );
+			e.printStackTrace();
+		} catch (IOException e) {
+			Log.e(TAG, "error, file " + PRIVATE_FILE + " write failed!" );
+			e.printStackTrace();
+		}
     }
 
     public static void close() {
-        if (mWriter != null) {
-            mWriter.flush();
-            mWriter.close();
-            mWriter = null;
-        }
+		if (mWriter != null) {
+	    	mWriter.flush();
+			mWriter.close();
+			mWriter = null;
+    	}
     }
 
     // debug
     public static void d(String message) {
-        Log.d(TAG, "d(" + new Date() + ") " + message);
-        if (mWriter != null) {
-            mWriter.println("d(" + new Date() + ") " + message);
-        }
+    	Log.d(TAG, "d(" + new Date() + ") " + message);
+    	if (mWriter != null) {
+    		mWriter.println("d(" + new Date() + ") " + message);
+    	}
     }
 
     // error
     public static void e(String message) {
-        Log.d(TAG, "e(" + new Date() + ") " + message);
-        if (mWriter != null) {
-            mWriter.println("e(" + new Date() + ") " + message);
-        }
+    	Log.d(TAG, "e(" + new Date() + ") " + message);
+    	if (mWriter != null) {
+    		mWriter.println("e(" + new Date() + ") " + message);
+    	}
     }
 }

@@ -59,16 +59,16 @@ public class FaceActivity extends Activity implements View.OnClickListener {
         Utils.matToBitmap(mat, bitmap);
         imageView.setImageBitmap(bitmap);
 
-        WFaceRecognizer wfr = WFaceRecognizer.getInstance();
-        String result = wfr.getResult();
-        if (result != null) {
-            TextView textView = (TextView) findViewById(R.id.textview_person);
-            if (result.equals("Unknown")) {
-                textView.setText("Sorry, unknown");
-            } else {
-                textView.setText(result + " (" + (int)wfr.getConfidence() + ")");
-            }
-        }
+		WFaceRecognizer wfr = WFaceRecognizer.getInstance();
+		String result = wfr.getResult();
+		if (result != null) {
+			TextView textView = (TextView) findViewById(R.id.textview_person);
+			if (result.equals("Unknown")) {
+				textView.setText("Sorry, unknown");
+			} else {
+				textView.setText(result + " (" + (int)wfr.getConfidence() + ")");
+			}
+		}
     }
 
     @Override
@@ -158,11 +158,11 @@ public class FaceActivity extends Activity implements View.OnClickListener {
         builder.show();
     }
 
-    private void userInputNameSmart() {
+	private void userInputNameSmart() {
         //
         // Smart input implemented by AutoCompleteTextView
         //
-        final AutoCompleteTextView input = new AutoCompleteTextView(this);
+		final AutoCompleteTextView input = new AutoCompleteTextView(this);
         input.setThreshold(1);
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 
@@ -239,5 +239,5 @@ public class FaceActivity extends Activity implements View.OnClickListener {
         });
         builder.setCancelable(false); // cancel with button only
         builder.show();
-    }
+	}
 }

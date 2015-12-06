@@ -37,65 +37,65 @@ import java.util.Vector;
  */
 public class WFRPerson {
 
-    private final String TAG = "whoo.dm.p";
-    
-    private String mName;
-    private int    mLabelID;
+	private final String TAG = "whoo.dm.p";
+	
+	private String mName;
+	private int    mLabelID;
 
-    private Context mContext;
+	private Context mContext;
 
-    private Vector<WFRFaceImage> mImageList;
+	private Vector<WFRFaceImage> mImageList;
 
-    private String mDirName;
+	private String mDirName;
 
-    public WFRPerson(Context context, String name, int lable) {
-        mContext = context;
-        mName = name;
-        mLabelID = lable;
-        mImageList = new Vector<WFRFaceImage>();
+	public WFRPerson(Context context, String name, int lable) {
+		mContext = context;
+		mName = name;
+		mLabelID = lable;
+		mImageList = new Vector<WFRFaceImage>();
 
-        //
-        // This is to avoid the bug that fs does not support
-        // bland within the directory string. However, this bug
-        // is confirmed to be not existing.
-        //
-        //StringBuilder sb = new StringBuilder(mName);
-        //for (int ii = 0; ii < sb.length(); ii++) {
-        //    if (sb.charAt(ii) == ' ') {
-        //        sb.setCharAt(ii, '_');
-        //    }
-        //}
-        //mDirName = sb.toString();
-        //
-        mDirName = mName;
-    }
+		//
+		// This is to avoid the bug that fs does not support
+		// bland within the directory string. However, this bug
+		// is confirmed to be not existing.
+		//
+		//StringBuilder sb = new StringBuilder(mName);
+		//for (int ii = 0; ii < sb.length(); ii++) {
+		//	if (sb.charAt(ii) == ' ') {
+		//		sb.setCharAt(ii, '_');
+		//	}
+		//}
+		//mDirName = sb.toString();
+		//
+		mDirName = mName;
+	}
 
-    public int count() {
-        return mImageList.size();
-    }
+	public int count() {
+		return mImageList.size();
+	}
 
-    public int getFaceImageCount() {
-        return mImageList.size();
-    }
+	public int getFaceImageCount() {
+		return mImageList.size();
+	}
 
-    public WFRFaceImage getFaceImage(int index) {
-        if (0 <= index && index < mImageList.size()) {
-            return mImageList.get(index);
-        }
-        return null;
-    }
+	public WFRFaceImage getFaceImage(int index) {
+		if (0 <= index && index < mImageList.size()) {
+			return mImageList.get(index);
+		}
+		return null;
+	}
 
-    public String getName() {
-        return mName;
-    }
+	public String getName() {
+		return mName;
+	}
 
-    public String getDirName() {
-        return mDirName;
-    }
+	public String getDirName() {
+		return mDirName;
+	}
 
-    public int getLableID() {
-        return mLabelID;
-    }
+	public int getLableID() {
+		return mLabelID;
+	}
 
     public boolean addFaceImage(String path) {
         WFRFaceImage image = null;
@@ -110,33 +110,33 @@ public class WFRPerson {
             }
         }
 
-        try {
-            FileInputStream fis = null;
-            
-            if (WhooConfig.USING_EXTERNAL_STORAGE) {
+		try {
+			FileInputStream fis = null;
+			
+			if (WhooConfig.USING_EXTERNAL_STORAGE) {
                 File file = new File(path);
                 if (!file.exists()) {
                     WhooConfig.DBG("Error: SD card file " + path + " does not exist!");
                 }
                 fis = new FileInputStream(file);
 
-            } else {
-                File file = mContext.getFileStreamPath(path);
-                if (!file.exists()) {
-                    Log.d(TAG, "addFaceImage() error: file not exist: " + path);
-                    return false;
-                }
+			} else {
+				File file = mContext.getFileStreamPath(path);
+				if (!file.exists()) {
+					Log.d(TAG, "addFaceImage() error: file not exist: " + path);
+	                return false;
+				}
 
-                fis = mContext.openFileInput(path);
-            }
-            
+	            fis = mContext.openFileInput(path);
+			}
+			
             bitmap = BitmapFactory.decodeStream(fis);
             fis.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Mat mat = WhooTools.bitmap2GrayScaleMat(bitmap);
+		Mat mat = WhooTools.bitmap2GrayScaleMat(bitmap);
 
         image = new WFRFaceImage(mName, path);
         image.mMat    = mat;
@@ -147,33 +147,33 @@ public class WFRPerson {
         return true;
     }
 
-    public boolean addFaceImage(Mat mat) {
-        WFRFaceImage image = null;
-        String path = null;
+	public boolean addFaceImage(Mat mat) {
+		WFRFaceImage image = null;
+		String path = null;
         File file = null;
-        File dir = null;
+		File dir = null;
 
-        if (WhooConfig.USING_EXTERNAL_STORAGE) {
-            dir = Environment.getExternalStorageDirectory();
+		if (WhooConfig.USING_EXTERNAL_STORAGE) {
+    		dir = Environment.getExternalStorageDirectory();
             if (!dir.exists()) {
                 WhooConfig.DBG("Error: SD card path " + dir.getAbsolutePath() + " does not exist!");
             }
             else {
                 dir = new File(Environment.getExternalStorageDirectory().
-                    getAbsolutePath() + "/" + WhooConfig.ROOT_DIR() + "/" + mDirName);
+					getAbsolutePath() + "/" + WhooConfig.ROOT_DIR() + "/" + mDirName);
                 if (!dir.exists()) {
                     dir.mkdirs();
                     dir.setReadable(true, true);
                     dir.setWritable(true, true);
                 }
             }
-        } else {
-            dir = mContext.getFileStreamPath(mName);
-            if (!dir.exists()) {
-                dir.mkdir();
-                dir.setReadable(true, false);
-                dir.setWritable(true, false);
-            }
+		} else {
+	        dir = mContext.getFileStreamPath(mName);
+	        if (!dir.exists()) {
+	            dir.mkdir();
+	            dir.setReadable(true, false);
+	            dir.setWritable(true, false);
+	        }
         }
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -183,7 +183,7 @@ public class WFRPerson {
             e.printStackTrace();
         }
 
-        path = file.getAbsolutePath();
+		path = file.getAbsolutePath();
 
         Bitmap bitmap = Bitmap.createBitmap(mat.width(), mat.height(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(mat, bitmap);
@@ -197,20 +197,20 @@ public class WFRPerson {
         }
 
         int count = mImageList.size();
-        for (int ii = 0; ii < count; ii++) {
-            image = mImageList.get(ii);
-            if (image.mPath.equals(path)) {
-                Log.d(TAG, "addFaceImage() error: duplicate path " + path);
-                return false;
-            }
-        }
+		for (int ii = 0; ii < count; ii++) {
+			image = mImageList.get(ii);
+			if (image.mPath.equals(path)) {
+				Log.d(TAG, "addFaceImage() error: duplicate path " + path);
+				return false;
+			}
+		}
 
-        image = new WFRFaceImage(mName, path);
-        image.mMat    = mat;
-        image.mBitmap = bitmap;
-        image.mPerson = this;
-        mImageList.add(image);
-        
-        return true;
-    }
+		image = new WFRFaceImage(mName, path);
+		image.mMat    = mat;
+		image.mBitmap = bitmap;
+		image.mPerson = this;
+		mImageList.add(image);
+		
+		return true;
+	}
 }

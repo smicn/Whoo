@@ -33,99 +33,99 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
 public class WelcomeActivity extends Activity {
-    
-    private final String TAG = "whoo";
-    
-    private Timer timer = new Timer();
-    private TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            Message message = new Message();
-            message.what = 1;
-            handler.sendMessage(message);
-        }
-    };
-    final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (1 == msg.what) {
-                if (Settings.getInstance().isOpenCVInited()) {
-                    if (timer != null) {
-                        timer.cancel();
-                        timer = null;
-                    }
-                    
-                    Log.e(TAG, "Since Inits are done, timer invokes next Activity!");
-                    
-                    Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    //
-                    // since it is an welcome window, it should be seen 
-                    // only once and never come back again.
-                    //
+	
+	private final String TAG = "whoo";
+	
+	private Timer timer = new Timer();
+	private TimerTask task = new TimerTask() {
+		@Override
+		public void run() {
+			Message message = new Message();
+			message.what = 1;
+			handler.sendMessage(message);
+		}
+	};
+	final Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (1 == msg.what) {
+				if (Settings.getInstance().isOpenCVInited()) {
+					if (timer != null) {
+						timer.cancel();
+						timer = null;
+					}
+					
+					Log.e(TAG, "Since Inits are done, timer invokes next Activity!");
+					
+					Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+					startActivity(intent);
+					//
+					// since it is an welcome window, it should be seen 
+					// only once and never come back again.
+					//
                     WelcomeActivity.this.finish();
-                } else {
+				} else {
                     Log.e(TAG, "what? initializations cost too long time!");
                 }
-            }
-            super.handleMessage(msg);
-        }
-    };
+			}
+			super.handleMessage(msg);
+		}
+	};
 
-    //
-    // OpenCV init and callback
-    //
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+	//
+	// OpenCV init and callback
+	//
+	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS: {
-                        Log.i(TAG, "OpenCV loaded successfully");
+						Log.i(TAG, "OpenCV loaded successfully");
 
-                        // Load native library after(!) OpenCV initialization
+	                    // Load native library after(!) OpenCV initialization
                         System.loadLibrary("facerec");
                         Log.i(TAG, "libfacerec.so loaded successfully");
 
-                        // it has to be placed here.. (need init of opencv)
-                        WFRDataFactory.getInstance().load();
-                        Log.i(TAG, "WFR data loaded.");
+						// it has to be placed here.. (need init of opencv)
+						WFRDataFactory.getInstance().load();
+						Log.i(TAG, "WFR data loaded.");
 
-                         FaceDetector fd = FaceDetector.getInstance();
-                        fd.setContext(WelcomeActivity.this);
-                        fd.init();
+	                 	FaceDetector fd = FaceDetector.getInstance();
+						fd.setContext(WelcomeActivity.this);
+						fd.init();
                         Log.i(TAG, "fd inited.");
 
                         WFaceRecognizer wfr = WFaceRecognizer.getInstance();
-                        wfr.setContext(WelcomeActivity.this);
+						wfr.setContext(WelcomeActivity.this);
                         wfr.init();
                         Log.i(TAG, "fr inited.");
 
-                        // OpenCV inited.
-                        Settings.getInstance().onOpenCVInited();
+						// OpenCV inited.
+						Settings.getInstance().onOpenCVInited();
 
                         WhooLog.d("Whoo's initiliazitions end, cost=" + WhooTools.endTickCount() + "ms.");
 
                         Log.i(TAG, "now, all initilizations are done!");
-                    }
-                     break;
+                	}
+                 	break;
 
-                default:
-                    super.onManagerConnected(status);
-                    break;
+				default:
+					super.onManagerConnected(status);
+					break;
             }
         }
-    };
+	};
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_welcome);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_welcome);
 
-        if (WhooConfig.USING_CLIENT_SERVER_MODE) {
-            Toast.makeText(this, "IP: " + WhooTools.getLocalIP(this),
-                    Toast.LENGTH_LONG).show();
-        }
+		if (WhooConfig.USING_CLIENT_SERVER_MODE) {
+			Toast.makeText(this, "IP: " + WhooTools.getLocalIP(this),
+					Toast.LENGTH_LONG).show();
+		}
 
         final Timer timer0 = new Timer();
         timer0.scheduleAtFixedRate(new TimerTask() {
@@ -139,8 +139,8 @@ public class WelcomeActivity extends Activity {
                         // Init Log module.
                         WhooLog.open(WelcomeActivity.this);
 
-                        // Start detecting time cost of inits.
-                        WhooTools.startTickCount();
+						// Start detecting time cost of inits.
+						WhooTools.startTickCount();
 
                         // Init Settings module and load data.
                         Settings.getInstance().initContext(WelcomeActivity.this);
@@ -164,16 +164,16 @@ public class WelcomeActivity extends Activity {
             }
         }, 300, 100);
 
-        // Let the timer check if the initilizations are done or not every 1000 ms.
-        timer.schedule(task, 500, 3000);
-    }
-    
-    @Override
-    protected void onDestroy() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-        super.onDestroy();
-    }
+		// Let the timer check if the initilizations are done or not every 1000 ms.
+		timer.schedule(task, 500, 3000);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		if (timer != null) {
+			timer.cancel();
+			timer = null;
+		}
+		super.onDestroy();
+	}
 }

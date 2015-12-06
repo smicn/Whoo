@@ -18,22 +18,22 @@ public class LBPHFaceRecognizer extends FaceRecognizer {
     private static native long createLBPHFaceRecognizer0();
     private static native long createLBPHFaceRecognizer1(int radius);
     private static native long createLBPHFaceRecognizer2(int radius,int neighbours);
-    private static native long createLBPHFaceRecognizer(
-        int radius,int neighbours, int grid_x, int grid_y, double threshold);
+	private static native long createLBPHFaceRecognizer(
+		int radius,int neighbours, int grid_x, int grid_y, double threshold);
  
     public LBPHFaceRecognizer() {
-        super(createLBPHFaceRecognizer0());
+    	super(createLBPHFaceRecognizer0());
     }
-    
+	
     public LBPHFaceRecognizer(int radius) {
-        super(createLBPHFaceRecognizer1(radius));
+    	super(createLBPHFaceRecognizer1(radius));
     }
-    
+	
     public LBPHFaceRecognizer(int radius,int neighbours) {
-        super(createLBPHFaceRecognizer2(radius, neighbours));
+    	super(createLBPHFaceRecognizer2(radius, neighbours));
     }
 
-    public LBPHFaceRecognizer(int radius,int neighbours, int grid_x, int grid_y, double threshold) {
-        super(createLBPHFaceRecognizer(radius, neighbours, grid_x, grid_y, threshold));
+	public LBPHFaceRecognizer(int radius,int neighbours, int grid_x, int grid_y, double threshold) {
+    	super(createLBPHFaceRecognizer(radius, neighbours, grid_x, grid_y, threshold));
     }
 }

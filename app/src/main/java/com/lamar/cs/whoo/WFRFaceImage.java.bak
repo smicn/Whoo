@@ -25,13 +25,13 @@ public class WFRFaceImage {
 
     public String mName;
     public String mPath;
-    public Mat mMat;
-    public Bitmap mBitmap;
+	public Mat mMat;
+	public Bitmap mBitmap;
 
-    public WFRPerson mPerson;
+	public WFRPerson mPerson;
 
-    public WFRFaceImage(String name, String path) {
-        mName = name;
-        mPath = path;
-    }
+	public WFRFaceImage(String name, String path) {
+		mName = name;
+		mPath = path;
+	}
 }

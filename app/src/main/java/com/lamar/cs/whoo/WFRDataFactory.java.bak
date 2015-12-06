@@ -42,58 +42,58 @@ public class WFRDataFactory {
 
     private final String TAG = "whoo.dm";
 
-    private HashMap<String, WFRPerson> mPersons;
+	private HashMap<String, WFRPerson> mPersons;
 
-    private Context mContext;
+	private Context mContext;
 
-    private static WFRDataFactory mInstance = new WFRDataFactory();
+	private static WFRDataFactory mInstance = new WFRDataFactory();
 
-    private final String FILE_PERSONS    = WhooConfig.PERSON_FILE();
-    private final String DEFAULT_PERSONS = "default_persons.dat";
+	private final String FILE_PERSONS    = WhooConfig.PERSON_FILE();
+	private final String DEFAULT_PERSONS = "default_persons.dat";
 
-    private WFRDataFactory() {
+	private WFRDataFactory() {
         mPersons = new HashMap<String, WFRPerson>();
-    }
+	}
 
-    public static WFRDataFactory getInstance() {
-        return mInstance;
-    }
+	public static WFRDataFactory getInstance() {
+		return mInstance;
+	}
 
-    public void setContext(Context context) {
-        mContext = context;
-    }
+	public void setContext(Context context) {
+		mContext = context;
+	}
 
-    public void load() {
-        Log.d(TAG, "load():");
-        
-        try {
-            File dir = null;
-            FileInputStream fis = null;
+	public void load() {
+		Log.d(TAG, "load():");
+		
+		try {
+			File dir = null;
+			FileInputStream fis = null;
 
             if (WhooConfig.USING_EXTERNAL_STORAGE) {
                 dir = Environment.getExternalStorageDirectory();
-                Log.d(TAG, "d: Environment.getExternalStorageDirectory()=" + dir.getAbsolutePath());
-                
+				Log.d(TAG, "d: Environment.getExternalStorageDirectory()=" + dir.getAbsolutePath());
+				
                 if (!dir.exists()) {
                     WhooConfig.DBG("Error: SD card path " + dir.getAbsolutePath() + " does not exist!");
-                    return;
+					return;
                 }
                 else {
                     dir = new File(Environment.getExternalStorageDirectory()
-                            .getAbsolutePath() + "/" + WhooConfig.ROOT_DIR());
+							.getAbsolutePath() + "/" + WhooConfig.ROOT_DIR());
                     if (!dir.exists()) {
                         dir.mkdirs();
                         dir.setReadable(true, true);
                         dir.setWritable(true, true);
-                        
-                        Log.d(TAG, "d: created new directory by mkdir(): " + dir.getAbsolutePath());
+						
+						Log.d(TAG, "d: created new directory by mkdir(): " + dir.getAbsolutePath());
                     }
 
                     File file = new File(dir.getAbsolutePath() + "/" + FILE_PERSONS);
                     if (!file.exists()) {
-                        Log.d(TAG, "d: .person not exist: " + dir.getAbsolutePath());
-                        Log.d(TAG, "d: should copy from res/raw.., but later on.");
-                        
+						Log.d(TAG, "d: .person not exist: " + dir.getAbsolutePath());
+						Log.d(TAG, "d: should copy from res/raw.., but later on.");
+						
                         //TODO: copy from default
                         //file.createNewFile();
                     }
@@ -118,14 +118,14 @@ public class WFRDataFactory {
 
                 WFRPerson person = new WFRPerson(mContext, name, label);
 
-                if (WhooConfig.USING_EXTERNAL_STORAGE) {
-                    dir = new File(Environment.getExternalStorageDirectory()
-                            .getAbsolutePath() + "/" + WhooConfig.ROOT_DIR() + 
-                            "/" + person.getDirName());
-                } else {
-                    dir = mContext.getFileStreamPath(name);
-                }
-                
+				if (WhooConfig.USING_EXTERNAL_STORAGE) {
+					dir = new File(Environment.getExternalStorageDirectory()
+							.getAbsolutePath() + "/" + WhooConfig.ROOT_DIR() + 
+							"/" + person.getDirName());
+				} else {
+                	dir = mContext.getFileStreamPath(name);
+				}
+				
                 if (!dir.exists()) {
                     Log.e(TAG, "warning: non-exist person.dir " + name);
                     continue;
@@ -137,41 +137,41 @@ public class WFRDataFactory {
                     }
                 };
                 File[] imageFiles = dir.listFiles(filter);
-                if (imageFiles.length <= 0) {
-                    Log.e(TAG, "warning: an empty directory (no-image) for " + name);
+				if (imageFiles.length <= 0) {
+					Log.e(TAG, "warning: an empty directory (no-image) for " + name);
                     continue;
-                }
-                
+				}
+				
                 for (int ii = 0; ii < imageFiles.length; ii++) {
-                    String path = imageFiles[ii].getAbsolutePath();
-                    
+					String path = imageFiles[ii].getAbsolutePath();
+					
                     boolean ret = person.addFaceImage(path);
-                    Log.d(TAG, "d: add_face_image(" + path + "): " +
+					Log.d(TAG, "d: add_face_image(" + path + "): " +
                             (ret ? "success" : "failed"));
                 }
 
                 mPersons.put(name, person);
             }
 
-            br.close();
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, "error, file " + FILE_PERSONS + " cannot be open!");
-        } catch (IOException e) {
-            Log.e(TAG, "error, file " + FILE_PERSONS + " read failed!" );
-            e.printStackTrace();
-        }
+			br.close();
+		} catch (FileNotFoundException e) {
+			Log.e(TAG, "error, file " + FILE_PERSONS + " cannot be open!");
+		} catch (IOException e) {
+			Log.e(TAG, "error, file " + FILE_PERSONS + " read failed!" );
+			e.printStackTrace();
+		}
 
-        checkAndReloadFromFS();
+		checkAndReloadFromFS();
 
-        Log.d(TAG, "load()!.");
-    }
+		Log.d(TAG, "load()!.");
+	}
 
-    //
-    // this is a patch for load(), because we
-    // find that person.txt might be clear to
-    // be empty sometimes.
-    //
-    private void checkAndReloadFromFS() {
+	//
+	// this is a patch for load(), because we
+	// find that person.txt might be clear to
+	// be empty sometimes.
+	//
+	private void checkAndReloadFromFS() {
         File dir = null;
 
         if (WhooConfig.USING_EXTERNAL_STORAGE) {
@@ -234,35 +234,35 @@ public class WFRDataFactory {
 
         Log.e(TAG, "Rebuilding DM from FS finished, DM.size=" + mPersons.size());
         WhooLog.e("Rebuilding DM from FS finished, DM.size=" + mPersons.size());
-    }
+	}
 
-    public void flush() {
-        Log.d(TAG, "flush():");
-        
-        try {
+	public void flush() {
+		Log.d(TAG, "flush():");
+		
+		try {
             FileOutputStream fos = null;
 
             if (WhooConfig.USING_EXTERNAL_STORAGE) {
                 File dir = Environment.getExternalStorageDirectory();
                 if (!dir.exists()) {
                     WhooConfig.DBG("Error: SD card path " + dir.getAbsolutePath() + " does not exist!");
-                    return;
+					return;
                 }
                 else {
                     dir = new File(Environment.getExternalStorageDirectory()
-                            .getAbsolutePath() + "/" + WhooConfig.ROOT_DIR());
+							.getAbsolutePath() + "/" + WhooConfig.ROOT_DIR());
                     if (!dir.exists()) {
                         dir.mkdirs();
                         dir.setReadable(true, true);
                         dir.setWritable(true, true);
 
-                        Log.d(TAG, "d: created new directory by mkdir(): " + dir.getAbsolutePath());
+						Log.d(TAG, "d: created new directory by mkdir(): " + dir.getAbsolutePath());
                     }
 
                     File file = new File(dir.getAbsolutePath() + "/" + FILE_PERSONS);
                     file.createNewFile();
-                    Log.d(TAG, "d: created new directory by file.createNewFile(): " + file.getAbsolutePath());
-                    
+					Log.d(TAG, "d: created new directory by file.createNewFile(): " + file.getAbsolutePath());
+					
                     fos = new FileOutputStream(file);
                 }
             }
@@ -284,25 +284,25 @@ public class WFRDataFactory {
 
                 bw.write(sb.toString());
 
-                Log.d(TAG, "d-w: " + sb.toString());
+				Log.d(TAG, "d-w: " + sb.toString());
             }
 
             bw.flush();
             bw.close();
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, "error, file " + FILE_PERSONS + " cannot be open!" );
-        } catch (IOException e) {
-            Log.e(TAG, "error, file " + FILE_PERSONS + " write failed!" );
-            e.printStackTrace();
-        }
+		} catch (FileNotFoundException e) {
+			Log.e(TAG, "error, file " + FILE_PERSONS + " cannot be open!" );
+		} catch (IOException e) {
+			Log.e(TAG, "error, file " + FILE_PERSONS + " write failed!" );
+			e.printStackTrace();
+		}
 
-        Log.d(TAG, "flush()!.");
-    }
+		Log.d(TAG, "flush()!.");
+	}
 
-    public boolean restore() {
-        Log.d(TAG, "restore(): not ready yet!");
-        
-        try {
+	public boolean restore() {
+		Log.d(TAG, "restore(): not ready yet!");
+		
+		try {
             if (WhooConfig.USING_EXTERNAL_STORAGE) {
                 //TODO:
             } else {
@@ -318,23 +318,23 @@ public class WFRDataFactory {
                     Log.e(TAG, "error, file " + FILE_PERSONS + " cannot delete!");
                 }
             }
-        } catch (Exception e) {
-            Log.e(TAG, "error, file " + FILE_PERSONS + " close failed!" );
-            e.printStackTrace();
-        }
-        
-        return false;
-    }
+		} catch (Exception e) {
+			Log.e(TAG, "error, file " + FILE_PERSONS + " close failed!" );
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
 
-    public int count() {
-        return mPersons.size();
-    }
+	public int count() {
+		return mPersons.size();
+	}
 
-    public int getPersonCount() {
-        return mPersons.size();
-    }
+	public int getPersonCount() {
+		return mPersons.size();
+	}
 
-    public WFRPerson getPerson(int index) {
+	public WFRPerson getPerson(int index) {
         int ii = 0;
         Iterator iter = mPersons.entrySet().iterator();
         while (iter.hasNext()) {
@@ -343,123 +343,123 @@ public class WFRDataFactory {
                 return (WFRPerson) entry.getValue();
             }
         }
-        return null;
-    }
+		return null;
+	}
 
-    public WFRPerson getPersonByLabel(int label) {
+	public WFRPerson getPersonByLabel(int label) {
         Iterator iter = mPersons.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry entry  = (Map.Entry)iter.next();
             WFRPerson person = (WFRPerson)entry.getValue();
-            if (person.getLableID() == label) {
-                return person;
-            }
+			if (person.getLableID() == label) {
+				return person;
+			}
         }
-        return null;
-    }
+		return null;
+	}
 
-    public WFRPerson addPerson(String name) {
-        //
-        // if existing, return it directly.
-        //
-        if (mPersons.containsKey(name)) {
-            return mPersons.get(name);
-        }
+	public WFRPerson addPerson(String name) {
+		//
+		// if existing, return it directly.
+		//
+		if (mPersons.containsKey(name)) {
+			return mPersons.get(name);
+		}
 
-        //
-        // calculate the lable_id by new=max+1
-        //
-        int label = 0;
-        Iterator iter = mPersons.entrySet().iterator();
+		//
+		// calculate the lable_id by new=max+1
+		//
+		int label = 0;
+		Iterator iter = mPersons.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry)iter.next();
             WFRPerson person = (WFRPerson)entry.getValue();
 
-            if (person.getLableID() > label) {
-                label = person.getLableID();
-            }
+			if (person.getLableID() > label) {
+				label = person.getLableID();
+			}
         }
-        label++;
+		label++;
 
-        //
-        // create new person
-        //
-        WFRPerson person = new WFRPerson(mContext, name, label);
+		//
+		// create new person
+		//
+		WFRPerson person = new WFRPerson(mContext, name, label);
 
-        //
-        // make directory if not existing.
-        //
+		//
+		// make directory if not existing.
+		//
         //File dir = Environment.getExternalStoragePublicDirectory(
         //        Environment.DIRECTORY_PICTURES);
         File dir = null;
         if (WhooConfig.USING_EXTERNAL_STORAGE) {
             dir = new File(Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + "/" + WhooConfig.ROOT_DIR());
+					.getAbsolutePath() + "/" + WhooConfig.ROOT_DIR());
             if (!dir.exists()) {
-                Log.d(TAG, "error, not exist path: " + dir.getAbsolutePath());
-                dir = null;
+				Log.d(TAG, "error, not exist path: " + dir.getAbsolutePath());
+				dir = null;
             } else {
-                dir = new File(Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + "/" + WhooConfig.ROOT_DIR() + "/" + person.getDirName());
+            	dir = new File(Environment.getExternalStorageDirectory()
+					.getAbsolutePath() + "/" + WhooConfig.ROOT_DIR() + "/" + person.getDirName());
             }
         }
         else {
             dir = mContext.getFileStreamPath(name);
         }
-        
+		
         if (dir != null && !dir.exists()) {
-            dir.mkdirs();
+			dir.mkdirs();
             dir.setReadable(true, true);
             dir.setWritable(true, true);
         }
 
         mPersons.put(name, person);
-        
+		
         return person;
-    }
+	}
 
-    public void deletePerson(WFRPerson person) {
-        File dir = null;
+	public void deletePerson(WFRPerson person) {
+		File dir = null;
         if (WhooConfig.USING_EXTERNAL_STORAGE) {
             dir = new File(Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + "/" + WhooConfig.ROOT_DIR());
+					.getAbsolutePath() + "/" + WhooConfig.ROOT_DIR());
             if (!dir.exists()) {
-                Log.d(TAG, "error, not exist path: " + dir.getAbsolutePath());
-                dir = null;
+				Log.d(TAG, "error, not exist path: " + dir.getAbsolutePath());
+				dir = null;
             } else {
-                dir = new File(Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + "/" + WhooConfig.ROOT_DIR() + "/" + person.getDirName());
+            	dir = new File(Environment.getExternalStorageDirectory()
+					.getAbsolutePath() + "/" + WhooConfig.ROOT_DIR() + "/" + person.getDirName());
             }
         }
         else {
             dir = mContext.getFileStreamPath(person.getName());
         }
-        
+		
         if (dir != null && !dir.exists()) {
-            dir.delete();
+			dir.delete();
         }
-        
+		
         mPersons.remove(person.getName());
-    }
+	}
 
-    public void deleteAll() {
+	public void deleteAll() {
         mPersons.clear();
-    }
+	}
 
-    public Vector<WFRFaceImage> getFaceImages() {
-        Vector<WFRFaceImage> images = new Vector<WFRFaceImage>();
+	public Vector<WFRFaceImage> getFaceImages() {
+		Vector<WFRFaceImage> images = new Vector<WFRFaceImage>();
 
-        Iterator iter = mPersons.entrySet().iterator();
+		Iterator iter = mPersons.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry)iter.next();
             WFRPerson person = (WFRPerson)entry.getValue();
 
-            int count = person.getFaceImageCount();
-            for (int ii = 0; ii < count; ii++) {
-                images.add(person.getFaceImage(ii));
-            }
+			int count = person.getFaceImageCount();
+			for (int ii = 0; ii < count; ii++) {
+				images.add(person.getFaceImage(ii));
+			}
         }
 
-        return images;
-    }
+		return images;
+	}
 }

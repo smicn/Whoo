@@ -14,13 +14,13 @@ public class FisherFaceRecognizer extends FaceRecognizer {
     //static{ System.loadLibrary("facerec"); } // .so
 
     private static native long createFisherFaceRecognizer0();
-    private static native long createFisherFaceRecognizer(int num_components, double threshold);
+	private static native long createFisherFaceRecognizer(int num_components, double threshold);
  
     public FisherFaceRecognizer() {
-        super(createFisherFaceRecognizer0());
+    	super(createFisherFaceRecognizer0());
     }
 
-    public FisherFaceRecognizer(int num_components, double threshold) {
-        super(createFisherFaceRecognizer(num_components, threshold));
+	public FisherFaceRecognizer(int num_components, double threshold) {
+    	super(createFisherFaceRecognizer(num_components, threshold));
     }
 }

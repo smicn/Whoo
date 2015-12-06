@@ -94,8 +94,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.onActivityResult(requestCode, resultCode, data);
-        
+    	super.onActivityResult(requestCode, resultCode, data);
+		
         if (1 == requestCode) {
             finish();
         }
@@ -124,18 +124,18 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         } else if (key.equals("prefs_server_addr")) {
 
             settings.setServerAddress(sharedPreferences.getString(key, "140.158.129.111"));
-            
+			
         } else if (key.equals("prefs_algorithm")) {
 
-            String no = sharedPreferences.getString(key, "2");
-            
+			String no = sharedPreferences.getString(key, "2");
+			
             settings.setFaceRecognitionAlgorithmNo(Integer.parseInt(no));
 
-            String algorithm = settings.getFaceRecognitionAlgorithm();
+			String algorithm = settings.getFaceRecognitionAlgorithm();
 
-            WFaceRecognizer.getInstance().setAlgorithm(algorithm);
+			WFaceRecognizer.getInstance().setAlgorithm(algorithm);
 
-            Log.d(TAG, "setting: user changes algorithm to " + algorithm);
+			Log.d(TAG, "setting: user changes algorithm to " + algorithm);
         }
     }
 }

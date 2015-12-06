@@ -55,7 +55,7 @@ public class WhooTools {
         return matR;
     }
 
-    public static Mat bitmap2GrayScaleMat(Bitmap bitmap) {
+	public static Mat bitmap2GrayScaleMat(Bitmap bitmap) {
         // copy bitmap data into matrix
         Mat matRGB = new Mat(FACE_WIDTH, FACE_HEIGHT, CvType.CV_8UC4);
         Utils.bitmapToMat(bitmap, matRGB);
@@ -67,36 +67,36 @@ public class WhooTools {
         return matR;
     }
 
-    public static boolean isTextEnglish(String text) {
-        Pattern p = Pattern.compile("[a-zA-Z]");
-         Matcher m = p.matcher(text);
-        return m.matches();
-    }
+	public static boolean isTextEnglish(String text) {
+		Pattern p = Pattern.compile("[a-zA-Z]");
+     	Matcher m = p.matcher(text);
+    	return m.matches();
+	}
 
-    public static boolean isTextNumbers(String text) {
-        Pattern p = Pattern.compile("[0-9]*"); 
-         Matcher m = p.matcher(text); 
-        return m.matches();
-    }
+	public static boolean isTextNumbers(String text) {
+		Pattern p = Pattern.compile("[0-9]*"); 
+     	Matcher m = p.matcher(text); 
+    	return m.matches();
+	}
 
-    public static boolean isTextChinese(String text) {
-        Pattern p = Pattern.compile("[\u4e00-\u9fa5]"); 
-         Matcher m = p.matcher(text); 
-        return m.matches();
-    }
+	public static boolean isTextChinese(String text) {
+		Pattern p = Pattern.compile("[\u4e00-\u9fa5]"); 
+     	Matcher m = p.matcher(text); 
+    	return m.matches();
+	}
 
-    public static void startTickCount() {
-        mTicksMS = System.currentTimeMillis();
-    }
+	public static void startTickCount() {
+		mTicksMS = System.currentTimeMillis();
+	}
 
-    public static long endTickCount() {
-        long ticksMS1 = System.currentTimeMillis();
-        return (ticksMS1 - mTicksMS);
-    }
+	public static long endTickCount() {
+		long ticksMS1 = System.currentTimeMillis();
+		return (ticksMS1 - mTicksMS);
+	}
 
-    private static long mTicksMS;
+	private static long mTicksMS;
 
-    public static String getLocalIP(Context context) {
+	public static String getLocalIP(Context context) {
         WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         int ipAddress = wifiInfo.getIpAddress();

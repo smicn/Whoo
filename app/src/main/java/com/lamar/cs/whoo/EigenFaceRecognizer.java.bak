@@ -13,13 +13,13 @@ public class EigenFaceRecognizer extends FaceRecognizer {
     //static{ System.loadLibrary("facerec"); } // .so
 
     private static native long createEigenFaceRecognizer0();
-    private static native long createEigenFaceRecognizer(int num_components, double threshold);
+	private static native long createEigenFaceRecognizer(int num_components, double threshold);
  
     public EigenFaceRecognizer() {
-        super(createEigenFaceRecognizer0());
+    	super(createEigenFaceRecognizer0());
     }
 
-    public EigenFaceRecognizer(int num_components, double threshold) {
-        super(createEigenFaceRecognizer(num_components, threshold));
+	public EigenFaceRecognizer(int num_components, double threshold) {
+    	super(createEigenFaceRecognizer(num_components, threshold));
     }
 }

@@ -24,62 +24,62 @@ import android.content.SharedPreferences;
  */
 public class Settings {
 
-	public static final String ALGORITHM_EIGEN  = "Eigenfaces";
-	public static final String ALGORITHM_FISHER = "Fisherfaces";
-	public static final String ALGORITHM_LBPH   = "LBPH";
+    public static final String ALGORITHM_EIGEN  = "Eigenfaces";
+    public static final String ALGORITHM_FISHER = "Fisherfaces";
+    public static final String ALGORITHM_LBPH   = "LBPH";
 
-	public static final int ALGORITHM_EIGEN_NO  = 0;
-	public static final int ALGORITHM_FISHER_NO = 1;
-	public static final int ALGORITHM_LBPH_NO   = 2;
-	
-	public static final String prefs_face_detection = "prefs_face_detection";
-	public static final String prefs_server_addr    = "prefs_server_addr";
-	public static final String prefs_algorithm      = "prefs_algorithm";
+    public static final int ALGORITHM_EIGEN_NO  = 0;
+    public static final int ALGORITHM_FISHER_NO = 1;
+    public static final int ALGORITHM_LBPH_NO   = 2;
+    
+    public static final String prefs_face_detection = "prefs_face_detection";
+    public static final String prefs_server_addr    = "prefs_server_addr";
+    public static final String prefs_algorithm      = "prefs_algorithm";
 
-	private boolean mFaceDetectionEnabled;
-	private String mServerAddress;
-	private int mAlgorithmNo;
-	
+    private boolean mFaceDetectionEnabled;
+    private String mServerAddress;
+    private int mAlgorithmNo;
+    
     private static Settings ourInstance = new Settings();
 
-	private Context mContext;
+    private Context mContext;
 
-	private String mFILE = "settings.dat";
+    private String mFILE = "settings.dat";
 
-	private boolean mOpenCVInited;
+    private boolean mOpenCVInited;
 
     public static Settings getInstance() {
         return ourInstance;
     }
 
     private Settings() {
-		mOpenCVInited = false;
+        mOpenCVInited = false;
     }
 
-	public void initContext(Context c) {
-		mContext = c;
-	}
+    public void initContext(Context c) {
+        mContext = c;
+    }
 
     public void load() {
-		assert(mContext != null);
-		
-		SharedPreferences prefs = mContext.getSharedPreferences(mFILE, mContext.MODE_PRIVATE);
-		
+        assert(mContext != null);
+        
+        SharedPreferences prefs = mContext.getSharedPreferences(mFILE, mContext.MODE_PRIVATE);
+        
         mFaceDetectionEnabled = prefs.getBoolean(prefs_face_detection, true);
         mServerAddress        = prefs.getString(prefs_server_addr, "140.158.129.111");
-		mAlgorithmNo          = prefs.getInt(prefs_algorithm, 2);
+        mAlgorithmNo          = prefs.getInt(prefs_algorithm, 2);
     }
 
     public void sync() {
-		assert(mContext != null);
-		
-		SharedPreferences prefs = mContext.getSharedPreferences(mFILE, mContext.MODE_PRIVATE);
+        assert(mContext != null);
+        
+        SharedPreferences prefs = mContext.getSharedPreferences(mFILE, mContext.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-		
+        
         editor.putBoolean(prefs_face_detection, mFaceDetectionEnabled);
         editor.putString (prefs_server_addr,    mServerAddress);
-		editor.putInt(prefs_algorithm,      getFaceRecognitionAlgorithmNo());
-		
+        editor.putInt(prefs_algorithm,      getFaceRecognitionAlgorithmNo());
+        
         editor.commit();
     }
 
@@ -104,58 +104,58 @@ public class Settings {
     public void setString(String key, String value) {
     }
 
-	public boolean isFaceDetectionEnabled() {
-		return mFaceDetectionEnabled;
-	}
+    public boolean isFaceDetectionEnabled() {
+        return mFaceDetectionEnabled;
+    }
 
-	public void setFaceDetectionEnabled(boolean yes) {
-		mFaceDetectionEnabled = yes;
-	}
+    public void setFaceDetectionEnabled(boolean yes) {
+        mFaceDetectionEnabled = yes;
+    }
 
-	public String getServerAddress() {
-		return mServerAddress;
-	}
+    public String getServerAddress() {
+        return mServerAddress;
+    }
 
-	public void setServerAddress(String address) {
-		mServerAddress = address;
-	}
+    public void setServerAddress(String address) {
+        mServerAddress = address;
+    }
 
-	public String getFaceRecognitionAlgorithm() {
-		switch (mAlgorithmNo) {
-		case ALGORITHM_EIGEN_NO:  return ALGORITHM_EIGEN;
-		case ALGORITHM_FISHER_NO: return ALGORITHM_FISHER;
-		case ALGORITHM_LBPH_NO:   return ALGORITHM_LBPH;
-		default:
-			return ALGORITHM_LBPH;
-		}
-	}
+    public String getFaceRecognitionAlgorithm() {
+        switch (mAlgorithmNo) {
+        case ALGORITHM_EIGEN_NO:  return ALGORITHM_EIGEN;
+        case ALGORITHM_FISHER_NO: return ALGORITHM_FISHER;
+        case ALGORITHM_LBPH_NO:   return ALGORITHM_LBPH;
+        default:
+            return ALGORITHM_LBPH;
+        }
+    }
 
-	public void setFaceRecognitionAlgorithm(String algorithm) {
-		if (algorithm.equals(ALGORITHM_EIGEN)) {
-			mAlgorithmNo = ALGORITHM_EIGEN_NO;
-		} else if (algorithm.equals(ALGORITHM_FISHER)) {
-			mAlgorithmNo = ALGORITHM_FISHER_NO;
-		} else if (algorithm.equals(ALGORITHM_LBPH)) {
-			mAlgorithmNo = ALGORITHM_LBPH_NO;
-		} else {
-			//assert(0);
-			mAlgorithmNo = ALGORITHM_LBPH_NO;
-		}
-	}
+    public void setFaceRecognitionAlgorithm(String algorithm) {
+        if (algorithm.equals(ALGORITHM_EIGEN)) {
+            mAlgorithmNo = ALGORITHM_EIGEN_NO;
+        } else if (algorithm.equals(ALGORITHM_FISHER)) {
+            mAlgorithmNo = ALGORITHM_FISHER_NO;
+        } else if (algorithm.equals(ALGORITHM_LBPH)) {
+            mAlgorithmNo = ALGORITHM_LBPH_NO;
+        } else {
+            //assert(0);
+            mAlgorithmNo = ALGORITHM_LBPH_NO;
+        }
+    }
 
-	public int getFaceRecognitionAlgorithmNo() {
-		return mAlgorithmNo;
-	}
+    public int getFaceRecognitionAlgorithmNo() {
+        return mAlgorithmNo;
+    }
 
-	public void setFaceRecognitionAlgorithmNo(int no) {
-		mAlgorithmNo = no;
-	}
+    public void setFaceRecognitionAlgorithmNo(int no) {
+        mAlgorithmNo = no;
+    }
 
-	public boolean isOpenCVInited() {
-		return mOpenCVInited;
-	}
+    public boolean isOpenCVInited() {
+        return mOpenCVInited;
+    }
 
-	public void onOpenCVInited() {
-		mOpenCVInited = true;
-	}
+    public void onOpenCVInited() {
+        mOpenCVInited = true;
+    }
 }
