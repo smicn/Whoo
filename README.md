@@ -41,6 +41,6 @@ to handle this during my thesis. Hopefully, most of the Android phones have at l
 ![](https://raw.githubusercontent.com/smicn/Whoo/master/docs/pics/whoo.png)
 
 ## Documents and References
-  Please refer to the dirctory ./docs for more information, where I put my thesis 
-defense slides and the abstract of my thesis paper. If you are interested in this topic,  
-please feel free to email me via smicn@foxmail.com
+Please refer to the dirctory ./docs for more information, where I put my thesis 
+defense slides and the abstract of my thesis paper.<br>
+Also, please feel free to write to me: smicn@foxmail.com, if you are interested in this topic.
