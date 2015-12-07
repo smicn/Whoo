@@ -34,4 +34,4 @@ the name list), and hope you find this software works.
 * Samsung Galaxy S4 (Display Resolution: 1920x1080 pixels, Android 4.4.2 (Kitkat))
 
 ## The snapshots of Whoo GUIs
-![](https://github.com/smicn/Whoo/docs/pics/whoo.png)
+![](https://github.com/smicn/Whoo/tree/master/docs/pics/whoo.png)
