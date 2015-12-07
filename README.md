@@ -11,7 +11,7 @@ algorithms. However, it really did some careful design and optimizations
 to make the face recognition easy and friendly to use. Just take pictures
 to your friends and yourself, and hope you have fun from it.
 
-## Compiling
+## Compilation
 * Make sure that Android Studio, Android SDK and NDK are installed on your PC.
 * Download this project to your PC; You do not need to install OpenCV SDK or 
 runtime by yourself because this project already contains the most ensential
@@ -41,6 +41,6 @@ to handle this during my thesis. Hopefully, most of the Android phones have at l
 ![](https://raw.githubusercontent.com/smicn/Whoo/master/docs/pics/whoo.png)
 
 ## Documents and References
-  Please refer to the dirctory ./docs for more information, where I put my thesis defense sildes
-and the abstract of the thesis paper. If you are interested in this topic, please feel free to 
-email me via smicn@foxmail.com
+  Please refer to the dirctory ./docs for more information, where I put my thesis 
+defense slides and the abstract of my thesis paper. If you are interested in this topic,  
+please feel free to email me via smicn@foxmail.com
