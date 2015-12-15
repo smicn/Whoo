@@ -35,40 +35,53 @@ import org.opencv.android.OpenCVLoader;
 public class WelcomeActivity extends Activity {
     
     private final String TAG = "whoo";
+
+	private final int MSG_FINISH_ACTIVITY = 1;
+	private final int MSG_INSTALL_OPENCV  = 2;
     
     private Timer timer = new Timer();
     private TimerTask task = new TimerTask() {
         @Override
         public void run() {
             Message message = new Message();
-            message.what = 1;
+            message.what = MSG_FINISH_ACTIVITY;
             handler.sendMessage(message);
         }
     };
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (1 == msg.what) {
-                if (Settings.getInstance().isOpenCVInited()) {
-                    if (timer != null) {
-                        timer.cancel();
-                        timer = null;
-                    }
-                    
-                    Log.e(TAG, "Since Inits are done, timer invokes next Activity!");
-                    
-                    Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    //
-                    // since it is an welcome window, it should be seen 
-                    // only once and never come back again.
-                    //
-                    WelcomeActivity.this.finish();
-                } else {
-                    Log.e(TAG, "what? initializations cost too long time!");
-                }
+            switch (msg.what) {
+				case MSG_FINISH_ACTIVITY:
+	                if (Settings.getInstance().isOpenCVInited()) {
+	                    if (timer != null) {
+	                        timer.cancel();
+	                        timer = null;
+	                    }
+	                    
+	                    Log.e(TAG, "Since Inits are done, timer invokes next Activity!");
+	                    
+	                    Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+	                    startActivity(intent);
+	                    //
+	                    // since it is an welcome window, it should be seen 
+	                    // only once and never come back again.
+	                    //
+	                    WelcomeActivity.this.finish();
+	                } else {
+	                    Log.e(TAG, "what? initializations cost too long time!");
+	                }
+					break;
+
+				case MSG_INSTALL_OPENCV:
+					// Init OpenCV and other data-loading related..
+                    OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, WelcomeActivity.this.getApplicationContext(), mLoaderCallback);
+					break;
+					
+				default:
+					super.handleMessage(msg);
+					break;
             }
-            super.handleMessage(msg);
         }
     };
 
@@ -133,34 +146,31 @@ public class WelcomeActivity extends Activity {
             public void run() {
                 timer0.cancel();
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Init Log module.
-                        WhooLog.open(WelcomeActivity.this);
+				// Init Log module.
+                WhooLog.open(WelcomeActivity.this);
 
-                        // Start detecting time cost of inits.
-                        WhooTools.startTickCount();
+                // Start detecting time cost of inits.
+                WhooTools.startTickCount();
 
-                        // Init Settings module and load data.
-                        Settings.getInstance().initContext(WelcomeActivity.this);
-                        Settings.getInstance().load();
+                // Init Settings module and load data.
+                Settings.getInstance().initContext(WelcomeActivity.this);
+                Settings.getInstance().load();
 
-                        // Init Config module.
-                        WhooConfig.setContext(WelcomeActivity.this);
+                // Init Config module.
+                WhooConfig.setContext(WelcomeActivity.this);
 
-                        // Init the Data Management module.
-                        WFRDataFactory.getInstance().setContext(WelcomeActivity.this);
+                // Init the Data Management module.
+                WFRDataFactory.getInstance().setContext(WelcomeActivity.this);
 
-                        // Init LocalNameList module and load cache data.
-                        LocalNameList.getInstance().setContext(WelcomeActivity.this);
-                        LocalNameList.getInstance().load();
+                // Init LocalNameList module and load cache data.
+                LocalNameList.getInstance().setContext(WelcomeActivity.this);
+                LocalNameList.getInstance().load();
 
-                        // Init OpenCV and other data-loading related..
-                        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, WelcomeActivity.this.getApplicationContext(), mLoaderCallback);
-                    }
-                });
-                thread.start();
+				// Init OpenCV and other data-loading related..
+				// But this has to be done in the main thread!!
+				Message message = new Message();
+	            message.what = MSG_INSTALL_OPENCV;
+	            handler.sendMessage(message);
             }
         }, 300, 100);
 
