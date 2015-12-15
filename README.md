@@ -1,5 +1,7 @@
 # Whoo
-A face recognition application based on OpenCV and Android
+A face recognition application based on OpenCV and Android <br>
+
+You can find this App from the Google-play store by searching its name "Whoo".<br>
 
 ## Brief
   The Android application Whoo is the part of the author's thesis, MS of
